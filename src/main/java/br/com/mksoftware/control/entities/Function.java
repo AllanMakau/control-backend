@@ -35,7 +35,7 @@ public class Function implements Serializable{
 	
 	
 
-	@ManyToMany(cascade  = {CascadeType.ALL})
+	@ManyToMany
 	@JoinTable(name = "function_tag", joinColumns = @JoinColumn(name = "function_id"),
 			inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<TagPermission> taglist = new HashSet<TagPermission>();
