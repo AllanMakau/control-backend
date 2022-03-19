@@ -8,6 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import lombok.Data;
 
@@ -36,17 +40,27 @@ public class User implements Serializable{
 	private LocalDate birthDate;
 	private Boolean isActive;
 	
+	@ManyToOne
 	private Officer officer;
-	
+	@ManyToOne
 	private Department departament;
-	
+	@ManyToOne
 	private Address address;
 	
+	@OneToMany
+    @JoinColumn(name = "idUser")
 	private List<Contact> contactList;
 	
+	
+	@JoinTable(
+		    name = "user_System",
+		    joinColumns = @JoinColumn(name = "user_id"),
+		    inverseJoinColumns = @JoinColumn(name = "system_id")
+		)
+	@OneToMany
 	private List<System> systemList;
 	
-	private List<Function> functionList;
+	//private List<Function> functionList;
 	
 	
 	

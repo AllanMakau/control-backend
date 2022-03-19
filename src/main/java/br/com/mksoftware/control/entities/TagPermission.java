@@ -22,9 +22,13 @@ public class TagPermission implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String tagName;
-	private String tagDescription;
+	private String name;
+	private String description;
 	private Boolean isActive;
+	
+	
+	
+
 
 	
 
