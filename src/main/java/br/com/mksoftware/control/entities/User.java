@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import lombok.Data;
 
@@ -19,6 +21,7 @@ import lombok.Data;
 
 @Data
 @Entity
+@Table(name = "TB_USER")
 public class User implements Serializable{
 
 	/**
@@ -42,12 +45,14 @@ public class User implements Serializable{
 	
 	@ManyToOne
 	private Officer officer;
+	
 	@ManyToOne
-	private Department departament;
-	@ManyToOne
+	private Department department;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Address address;
 	
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "idUser")
 	private List<Contact> contactList;
 	
@@ -59,11 +64,6 @@ public class User implements Serializable{
 		)
 	@OneToMany
 	private List<System> systemList;
-	
-	//private List<Function> functionList;
-	
-	
-	
 	
 
 }
