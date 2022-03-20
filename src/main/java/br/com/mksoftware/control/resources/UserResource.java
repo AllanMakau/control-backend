@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.mksoftware.control.entities.Function;
+import br.com.mksoftware.control.entities.System;
 import br.com.mksoftware.control.entities.User;
 import br.com.mksoftware.control.services.UserService;
 
@@ -61,6 +63,30 @@ public class UserResource {
 	@RequestMapping(value = "/{id}/ativo/{ativo}", method = RequestMethod.PUT)
 	public ResponseEntity<?> activateUser(@PathVariable Long id, @PathVariable Boolean ativo ){
 		User userUpdated = userService.activate(id, ativo); 
+		return ResponseEntity.ok(userUpdated);
+	}
+	
+	@RequestMapping(value = "/{id}/add-system/", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
+	public ResponseEntity<?> addSystem(@PathVariable Long id, @RequestBody System system ){
+		User userUpdated = userService.addSystem(id, system); 
+		return ResponseEntity.ok(userUpdated);
+	}
+
+	@RequestMapping(value = "/{id}/remove-system/", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json" )
+	public ResponseEntity<?> removeSystem(@PathVariable Long id, @RequestBody System tag ){
+		User userUpdated = userService.removeSystem(id, tag); 
+		return ResponseEntity.ok(userUpdated);
+	}
+	
+	@RequestMapping(value = "/{id}/add-function/", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
+	public ResponseEntity<?> addFunction(@PathVariable Long id, @RequestBody Function function ){
+		User userUpdated = userService.addFunction(id, function); 
+		return ResponseEntity.ok(userUpdated);
+	}
+
+	@RequestMapping(value = "/{id}/remove-function/", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json" )
+	public ResponseEntity<?> removeFunction(@PathVariable Long id, @RequestBody Function function ){
+		User userUpdated = userService.removeFunction(id, function); 
 		return ResponseEntity.ok(userUpdated);
 	}
 

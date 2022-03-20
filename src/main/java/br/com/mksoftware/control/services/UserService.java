@@ -7,7 +7,12 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
+import br.com.mksoftware.control.entities.Function;
+import br.com.mksoftware.control.entities.System;
 import br.com.mksoftware.control.entities.User;
+import br.com.mksoftware.control.repository.FunctionRepository;
+import br.com.mksoftware.control.repository.SystemRepository;
 import br.com.mksoftware.control.repository.UserRespository;
 
 @Service
@@ -16,6 +21,12 @@ public class UserService {
 	
 	@Autowired
 	private UserRespository userRepository;
+	
+	@Autowired
+	private FunctionRepository functionRepository;
+	
+	@Autowired
+	private SystemRepository systemRepository;
 	
 
 	public List<User> getAll() {
@@ -49,6 +60,38 @@ public class UserService {
 		userOld.setIsActive(ativo);
 		User userUpdated = userRepository.save(userOld);
 		return userUpdated;
+	}
+
+	@Transactional
+	public User addSystem(Long id, System system) {
+		User user = userRepository.findById(id).get();
+		System sys = systemRepository.getById(system.getId());
+		user.addSystem(sys);
+		return user;
+	}
+	
+	@Transactional
+	public User removeSystem(Long id, System system) {
+		User user = userRepository.findById(id).get();
+		System sys = systemRepository.getById(system.getId());
+		user.removeSystem(sys);
+		return user;
+	}
+
+	@Transactional
+	public User addFunction(Long id, Function function) {
+		User user = userRepository.findById(id).get();
+		Function fun = functionRepository.getById(function.getId());
+		user.addFunction(fun);
+		return user;
+	}
+
+	@Transactional
+	public User removeFunction(Long id, Function function) {
+		User user = userRepository.findById(id).get();
+		Function fun = functionRepository.getById(function.getId());
+		user.removeFunction(fun);
+		return user;
 	}
 
 }
