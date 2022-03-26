@@ -9,10 +9,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 
 @Data
 @Entity
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "TB_ADDRESS")
 public class Address implements Serializable {
 

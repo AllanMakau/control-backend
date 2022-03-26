@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.mksoftware.control.entities.Function;
-import br.com.mksoftware.control.entities.System;
+import br.com.mksoftware.control.dtos.resquest.ContactRequest;
+import br.com.mksoftware.control.dtos.resquest.FunctionRequest;
 import br.com.mksoftware.control.entities.User;
+import br.com.mksoftware.control.parse.ContactParse;
+import br.com.mksoftware.control.parse.FunctionParse;
+import br.com.mksoftware.control.parse.UserParse;
 import br.com.mksoftware.control.services.UserService;
 
 
@@ -25,12 +28,21 @@ public class UserResource {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private UserParse userParse;
+	
+	@Autowired
+	private FunctionParse functionParse;
+	
+	@Autowired
+	private ContactParse contactParse;
+	
 	
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getList(){
 		List<User> users = userService.getAll();
-		return ResponseEntity.ok(users);
+		return ResponseEntity.ok(userParse.toCollectionModel(users));
 	}
 	
 	@RequestMapping(method = RequestMethod.POST )
@@ -42,7 +54,7 @@ public class UserResource {
 	@RequestMapping(value = "/{id}",method = RequestMethod.GET)
 	public ResponseEntity<?> getUserById(@PathVariable Long id){
 		User user = userService.getUserById(id);
-		return ResponseEntity.ok(user);
+		return ResponseEntity.ok(userParse.toModelResponse(user));
 	}
 	
 	
@@ -60,34 +72,44 @@ public class UserResource {
 	}
 	
 	
-	@RequestMapping(value = "/{id}/ativo/{ativo}", method = RequestMethod.PUT)
-	public ResponseEntity<?> activateUser(@PathVariable Long id, @PathVariable Boolean ativo ){
-		User userUpdated = userService.activate(id, ativo); 
-		return ResponseEntity.ok(userUpdated);
+	@RequestMapping(value = "/{id}/activate/", method = RequestMethod.DELETE)
+	public ResponseEntity<?> activateUser(@PathVariable Long id ){
+		User userUpdated = userService.activate(id); 
+		return ResponseEntity.ok(userParse.toModelResponse(userUpdated));
 	}
 	
-	@RequestMapping(value = "/{id}/add-system/", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
-	public ResponseEntity<?> addSystem(@PathVariable Long id, @RequestBody System system ){
-		User userUpdated = userService.addSystem(id, system); 
-		return ResponseEntity.ok(userUpdated);
-	}
-
-	@RequestMapping(value = "/{id}/remove-system/", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json" )
-	public ResponseEntity<?> removeSystem(@PathVariable Long id, @RequestBody System tag ){
-		User userUpdated = userService.removeSystem(id, tag); 
-		return ResponseEntity.ok(userUpdated);
+	@RequestMapping(value = "/{id}/inactivate/", method = RequestMethod.DELETE)
+	public ResponseEntity<?> inactivateUser(@PathVariable Long id ){
+		User userUpdated = userService.inactivate(id); 
+		return ResponseEntity.ok(userParse.toModelResponse(userUpdated));
 	}
 	
 	@RequestMapping(value = "/{id}/add-function/", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
-	public ResponseEntity<?> addFunction(@PathVariable Long id, @RequestBody Function function ){
+	public ResponseEntity<?> addFunction(@PathVariable Long id, @RequestBody FunctionRequest functionRequest ){
+		var function = functionParse.toDomainObject(functionRequest);
 		User userUpdated = userService.addFunction(id, function); 
-		return ResponseEntity.ok(userUpdated);
+		return ResponseEntity.ok(userParse.toModelResponse(userUpdated));
 	}
 
 	@RequestMapping(value = "/{id}/remove-function/", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json" )
-	public ResponseEntity<?> removeFunction(@PathVariable Long id, @RequestBody Function function ){
+	public ResponseEntity<?> removeFunction(@PathVariable Long id, @RequestBody FunctionRequest functionRequest ){
+		var function = functionParse.toDomainObject(functionRequest);
 		User userUpdated = userService.removeFunction(id, function); 
-		return ResponseEntity.ok(userUpdated);
+		return ResponseEntity.ok(userParse.toModelResponse(userUpdated));
+	}
+	
+	@RequestMapping(value = "/{id}/add-contact/", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
+	public ResponseEntity<?> addContact(@PathVariable Long id, @RequestBody ContactRequest contactRequest ){
+		var contact = contactParse.toDomainObject(contactRequest);
+		User userUpdated = userService.addContact(id, contact); 
+		return ResponseEntity.ok(userParse.toModelResponse(userUpdated));
+	}
+
+	@RequestMapping(value = "/{id}/remove-contact/", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json" )
+	public ResponseEntity<?> removeContact(@PathVariable Long id, @RequestBody ContactRequest contactRequest ){
+		var contact = contactParse.toDomainObject(contactRequest);
+		User userUpdated = userService.removeContact(id, contact); 
+		return ResponseEntity.ok(userParse.toModelResponse(userUpdated));
 	}
 
 }

@@ -2,6 +2,8 @@ package br.com.mksoftware.control.resources;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.mksoftware.control.dtos.resquest.TagPermissionRequest;
 import br.com.mksoftware.control.entities.TagPermission;
+import br.com.mksoftware.control.parse.TagPermissionParse;
 import br.com.mksoftware.control.services.TagPermissionService;
 
 
@@ -22,24 +26,28 @@ public class TagPermissionResource {
 	@Autowired
 	private TagPermissionService tagPermissionService;
 	
+	@Autowired
+	private TagPermissionParse tagPermissionParse;
+	
 	
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getList(){
 		List<TagPermission> tagPermissions = tagPermissionService.getAll();
-		return ResponseEntity.ok(tagPermissions);
+		return ResponseEntity.ok(tagPermissionParse.toCollectionModel(tagPermissions));
 	}
 	
 	@RequestMapping(method = RequestMethod.POST )
-	public ResponseEntity<?> saveTagPermissio( @RequestBody TagPermission tagPermission){
-		TagPermission newTagPermission = tagPermissionService.saveTagPermission(tagPermission);
-		return ResponseEntity.ok(newTagPermission);
+	public ResponseEntity<?> saveTagPermissio( @RequestBody @Valid TagPermissionRequest tagPermissionRequest){
+		TagPermission tagPermission = tagPermissionParse.toDomainObject(tagPermissionRequest);
+		tagPermission = tagPermissionService.saveTagPermission(tagPermission);
+		return ResponseEntity.ok(tagPermissionParse.toModelResponse(tagPermission));
 	}
 	
 	@RequestMapping(value = "/{id}",method = RequestMethod.GET)
 	public ResponseEntity<?> getTagPermissionById(@PathVariable Long id){
 		TagPermission tagPermission = tagPermissionService.getTagPermissionById(id);
-		return ResponseEntity.ok(tagPermission);
+		return ResponseEntity.ok(tagPermissionParse.toModelResponse(tagPermission));
 	}
 	
 	
@@ -51,16 +59,24 @@ public class TagPermissionResource {
 	
 	
 	@RequestMapping(method = RequestMethod.PUT)
-	public ResponseEntity<?> update( @RequestBody TagPermission tagPermission){
-		TagPermission tagPermissionUpdated = tagPermissionService.updateTagPermission(tagPermission); 
-		return ResponseEntity.ok(tagPermissionUpdated);
+	public ResponseEntity<?> update(@RequestBody @Valid TagPermissionRequest tagPermissionRequest){
+		
+		TagPermission tagPermissionUpdated = tagPermissionParse.toDomainObject(tagPermissionRequest);
+		tagPermissionUpdated = tagPermissionService.updateTagPermission(tagPermissionUpdated); 
+		return ResponseEntity.ok(tagPermissionParse.toModelResponse(tagPermissionUpdated));
 	}
 	
 	
-	@RequestMapping(value = "/{id}/ativo/{ativo}", method = RequestMethod.PUT)
-	public ResponseEntity<?> activateTagPermission(@PathVariable Long id, @PathVariable Boolean ativo ){
-		TagPermission tagPermissionUpdated = tagPermissionService.activate(id, ativo); 
-		return ResponseEntity.ok(tagPermissionUpdated);
+	@RequestMapping(value = "/{id}/activate", method = RequestMethod.PUT)
+	public ResponseEntity<?> activateUser(@PathVariable Long id ){
+		TagPermission tagPermissionUpdated = tagPermissionService.activate(id); 
+		return ResponseEntity.ok(tagPermissionParse.toModelResponse(tagPermissionUpdated));
+	}
+	
+	@RequestMapping(value = "/{id}/inactivate", method = RequestMethod.PUT)
+	public ResponseEntity<?> inactivateUser(@PathVariable Long id ){
+		TagPermission tagPermissionUpdated = tagPermissionService.inactivate(id); 
+		return ResponseEntity.ok(tagPermissionParse.toModelResponse(tagPermissionUpdated));
 	}
 
 }

@@ -10,6 +10,7 @@ import org.springframework.util.ObjectUtils;
 
 import br.com.mksoftware.control.entities.Function;
 import br.com.mksoftware.control.entities.TagPermission;
+import br.com.mksoftware.control.exceptions.FunctionNotFoundException;
 import br.com.mksoftware.control.repository.FunctionRepository;
 import br.com.mksoftware.control.repository.TagPermissionRespository;
 
@@ -30,7 +31,7 @@ public class FunctionService {
 
 	@Transactional
 	public Function getFunctionById(Long id) {
-		return functionRepository.findById(id).get();
+		return functionRepository.findById(id).orElseThrow(() -> new FunctionNotFoundException(id.toString()));
 	}
 
 	@Transactional
@@ -49,11 +50,17 @@ public class FunctionService {
 	}
 
 	@Transactional
-	public Function activate(Long id, Boolean ativo) {
-		Function functionOld = functionRepository.findById(id).get();
-		functionOld.setIsActive(ativo);
-		Function functionUpdated = functionRepository.save(functionOld);
-		return functionUpdated;
+	public Function activate(Long id) {
+		Function function = functionRepository.findById(id).get();
+		function.activate();
+		return function;
+	}
+	
+	@Transactional
+	public Function inactivate(Long id) {
+		Function function = functionRepository.findById(id).get();
+		function.inactivate();
+		return function;
 	}
 
 	@Transactional

@@ -2,10 +2,13 @@ package br.com.mksoftware.control.services;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.mksoftware.control.entities.Department;
+import br.com.mksoftware.control.exceptions.DepartmentNotFoundException;
 import br.com.mksoftware.control.repository.DepartamentRespository;
 
 @Service
@@ -22,26 +25,33 @@ public class DepartmentService {
 	}
 
 	public Department getDepartmentById(Long id) {
-		return departmentRepository.findById(id).get();
+		return departmentRepository.findById(id).orElseThrow(() -> new DepartmentNotFoundException(id.toString()));
 	}
 	
-	public Department saveDepartment(Department officer) {
-		return departmentRepository.save(officer);
+	public Department saveDepartment(Department department) {
+		return departmentRepository.save(department);
 	}
 
 	public void deleteDepartmentById(Long id) {
 		departmentRepository.deleteById(id);
 	}
 
-	public Department updateDepartment(Department Department) {
-		return departmentRepository.save(Department);
+	public Department updateDepartment(Department department) {
+		return departmentRepository.save(department);
 	}
 
-	public Department activate(Long id, Boolean ativo) {
-		Department DepartmentOld = departmentRepository.findById(id).get();
-		DepartmentOld.setIsActive(ativo);
-		Department DepartmentUpdated = departmentRepository.save(DepartmentOld);
-		return DepartmentUpdated;
+	@Transactional
+	public Department activate(Long id) {
+		Department department = departmentRepository.findById(id).get();
+		department.activate();
+		return department;
+	}
+	
+	@Transactional
+	public Department inactivate(Long id) {
+		Department department = departmentRepository.findById(id).get();
+		department.inactivate();
+		return department;
 	}
 
 }

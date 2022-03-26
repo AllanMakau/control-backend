@@ -2,10 +2,13 @@ package br.com.mksoftware.control.services;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.mksoftware.control.entities.Officer;
+import br.com.mksoftware.control.exceptions.OfficerNotFoundException;
 import br.com.mksoftware.control.repository.OfficerRepository;
 
 @Service
@@ -21,7 +24,7 @@ public class OfficerService {
 	}
 
 	public Officer getOfficerById(Long id) {
-		return officerRespository.findById(id).get();
+		return officerRespository.findById(id).orElseThrow(() -> new OfficerNotFoundException(id.toString()));
 	}
 	
 	public Officer saveOfficer(Officer officer) {
@@ -36,11 +39,18 @@ public class OfficerService {
 		return officerRespository.save(officer);
 	}
 
-	public Officer activate(Long id, Boolean ativo) {
-		Officer officerOld = officerRespository.findById(id).get();
-		officerOld.setIsActive(ativo);
-		Officer officerUpdated = officerRespository.save(officerOld);
-		return officerUpdated;
+	@Transactional
+	public Officer activate(Long id) {
+		Officer officer = officerRespository.findById(id).get();
+		officer.activate();
+		return officer;
+	}
+	
+	@Transactional
+	public Officer inactivate(Long id) {
+		Officer officer = officerRespository.findById(id).get();
+		officer.inactivate();
+		return officer;
 	}
 
 }

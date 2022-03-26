@@ -2,10 +2,13 @@ package br.com.mksoftware.control.services;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.mksoftware.control.entities.System;
+import br.com.mksoftware.control.exceptions.SystemNotFoundException;
 import br.com.mksoftware.control.repository.SystemRepository;
 
 @Service
@@ -20,7 +23,7 @@ public class SystemService {
 	}
 
 	public System getSystemById(Long id) {
-		return systemRepository.findById(id).get();
+		return systemRepository.findById(id).orElseThrow(() -> new SystemNotFoundException(id.toString()));
 	}
 
 	public void deleteSystemById(Long id) {
@@ -35,11 +38,18 @@ public class SystemService {
 		return systemRepository.save(system);
 	}
 
-	public System activate(Long id, Boolean ativo) {
-		System systemOld = systemRepository.findById(id).get();
-		systemOld.setIsActive(ativo);
-		System systemUpdated = systemRepository.save(systemOld);
-		return systemUpdated;
+	@Transactional
+	public System activate(Long id) {
+		System system = systemRepository.findById(id).get();
+		system.activate();
+		return system;
+	}
+	
+	@Transactional
+	public System inactivate(Long id) {
+		System system = systemRepository.findById(id).get();
+		system.inactivate();
+		return system;
 	}
 	
 

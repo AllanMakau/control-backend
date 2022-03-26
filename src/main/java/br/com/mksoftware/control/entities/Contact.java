@@ -10,10 +10,12 @@ import javax.persistence.Table;
 
 import br.com.mksoftware.control.enums.ContactTypeEnum;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 
 @Data
 @Entity
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "TB_CONTACT")
 public class Contact implements Serializable{
 
@@ -22,6 +24,7 @@ public class Contact implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -30,7 +33,4 @@ public class Contact implements Serializable{
 	private String number;
 	
 	
-	
-	
-
 }

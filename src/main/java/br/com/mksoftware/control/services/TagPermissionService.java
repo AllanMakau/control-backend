@@ -2,15 +2,17 @@ package br.com.mksoftware.control.services;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.mksoftware.control.entities.TagPermission;
+import br.com.mksoftware.control.exceptions.TagNotFoundException;
 import br.com.mksoftware.control.repository.TagPermissionRespository;
 
 @Service
 public class TagPermissionService {
-	
 
 	@Autowired
 	private TagPermissionRespository tagPermissionRespository;
@@ -19,13 +21,14 @@ public class TagPermissionService {
 		var tagsPermission = tagPermissionRespository.findAll();
 		return tagsPermission;
 	}
-	
+
 	public TagPermission saveTagPermission(TagPermission tagPermission) {
 		return tagPermissionRespository.save(tagPermission);
 	}
 
 	public TagPermission getTagPermissionById(Long id) {
-		return tagPermissionRespository.findById(id).get();
+
+		return tagPermissionRespository.findById(id).orElseThrow(() -> new TagNotFoundException(id.toString()));
 	}
 
 	public void deleteTagPermissionById(Long id) {
@@ -35,14 +38,19 @@ public class TagPermissionService {
 	public TagPermission updateTagPermission(TagPermission tagPermission) {
 		return tagPermissionRespository.save(tagPermission);
 	}
-	
-	public TagPermission activate(Long id, Boolean ativo) {
-		TagPermission tagPermissionOld = tagPermissionRespository.findById(id).get();
-		tagPermissionOld.setIsActive(ativo);
-		TagPermission tagPermissionUpdated = tagPermissionRespository.save(tagPermissionOld);
-		return tagPermissionUpdated;
-	}
-		
 
+	@Transactional
+	public TagPermission activate(Long id) {
+		TagPermission tagPermission = tagPermissionRespository.findById(id).get();
+		tagPermission.activate();
+		return tagPermission;
+	}
+	
+	@Transactional
+	public TagPermission inactivate(Long id) {
+		TagPermission tagPermission = tagPermissionRespository.findById(id).get();
+		tagPermission.inactivate();
+		return tagPermission;
+	}
 
 }

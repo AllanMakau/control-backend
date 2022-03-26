@@ -9,10 +9,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 
 @Data
 @Entity
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "TB_SYSTEM")
 public class System implements Serializable{
 
@@ -21,13 +23,21 @@ public class System implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
 	private String abbreviation;
 	private String description;
-	private Boolean isActive;
+	private Boolean isActive = true;;
 
 
+	public void activate() {
+		setIsActive(true);
+	}
+	
+	public void inactivate() {
+		setIsActive(false);
+	}
 }
