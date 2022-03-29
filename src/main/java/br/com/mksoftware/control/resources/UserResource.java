@@ -2,6 +2,8 @@ package br.com.mksoftware.control.resources;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.mksoftware.control.dtos.resquest.ContactRequest;
 import br.com.mksoftware.control.dtos.resquest.FunctionRequest;
+import br.com.mksoftware.control.dtos.resquest.MailRequest;
+import br.com.mksoftware.control.dtos.resquest.PasswordUpdateRequest;
 import br.com.mksoftware.control.entities.User;
 import br.com.mksoftware.control.parse.ContactParse;
 import br.com.mksoftware.control.parse.FunctionParse;
@@ -51,10 +55,22 @@ public class UserResource {
 		return ResponseEntity.ok(newUser);
 	}
 	
+	@RequestMapping(value = "/generate-token/update-password", method = RequestMethod.POST )
+	public ResponseEntity<?> saveUser( @RequestBody MailRequest mailRequest){
+		userService.generateTokenUpdatePassword(mailRequest);
+		return ResponseEntity.ok().build();
+	}
+	
 	@RequestMapping(value = "/{id}",method = RequestMethod.GET)
 	public ResponseEntity<?> getUserById(@PathVariable Long id){
 		User user = userService.getUserById(id);
 		return ResponseEntity.ok(userParse.toModelResponse(user));
+	}
+	
+	@RequestMapping(value = "/detail/{id}",method = RequestMethod.GET)
+	public ResponseEntity<?> getUserDetailById(@PathVariable Long id){
+		User user = userService.getUserById(id);
+		return ResponseEntity.ok(userParse.toModelDetailResponse(user));
 	}
 	
 	
@@ -65,12 +81,16 @@ public class UserResource {
 	}
 	
 	
-	@RequestMapping(method = RequestMethod.PUT)
+	@RequestMapping( method = RequestMethod.PUT)
 	public ResponseEntity<?> update( @RequestBody User user){
 		User userUpdated = userService.updateUser(user); 
 		return ResponseEntity.ok(userUpdated);
 	}
 	
+	@RequestMapping(value = "/update-password", method = RequestMethod.PUT)
+	public ResponseEntity<?> updatePassword(@RequestBody @Valid PasswordUpdateRequest newPassowrd){
+		return ResponseEntity.ok(userParse.toModelResponse(userService.updatePasswordUser(newPassowrd)));
+	}
 	
 	@RequestMapping(value = "/{id}/activate/", method = RequestMethod.DELETE)
 	public ResponseEntity<?> activateUser(@PathVariable Long id ){

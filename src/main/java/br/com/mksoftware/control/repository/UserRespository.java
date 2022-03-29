@@ -11,5 +11,9 @@ import br.com.mksoftware.control.entities.User;
 public interface UserRespository extends JpaRepository<User, Long>{
 
 	Optional<User> findByMail(String mail);
+	
+	Boolean existsByMail(String mail);
+	
+	Boolean existsByUsername(String username);
 
 }

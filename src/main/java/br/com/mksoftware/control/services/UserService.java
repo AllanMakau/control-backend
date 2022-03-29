@@ -1,23 +1,29 @@
 package br.com.mksoftware.control.services;
 
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.mksoftware.control.dtos.resquest.MailRequest;
+import br.com.mksoftware.control.dtos.resquest.PasswordUpdateRequest;
 import br.com.mksoftware.control.entities.Contact;
 import br.com.mksoftware.control.entities.Function;
 import br.com.mksoftware.control.entities.System;
 import br.com.mksoftware.control.entities.User;
+import br.com.mksoftware.control.entities.UserTokenPassword;
 import br.com.mksoftware.control.exceptions.BusinessException;
 import br.com.mksoftware.control.exceptions.UserNotFoundException;
-import br.com.mksoftware.control.repository.ContactRepository;
 import br.com.mksoftware.control.repository.FunctionRepository;
 import br.com.mksoftware.control.repository.SystemRepository;
 import br.com.mksoftware.control.repository.UserRespository;
+import br.com.mksoftware.control.repository.UserTokenPasswordRespository;
 
 @Service
 public class UserService {
@@ -36,7 +42,7 @@ public class UserService {
 	private SystemRepository systemRepository;
 	
 	@Autowired
-	private ContactRepository contctRespository;
+	private UserTokenPasswordRespository userTokenPasswordRespository;
 	
 
 	public List<User> getAll() {
@@ -57,11 +63,10 @@ public class UserService {
 	@Transactional
 	public User saveUser(User user) {
 		
-		Optional<User> userExist = userRepository.findByMail(user.getMail());
 		
-		if (userExist.isPresent() && !userExist.get().equals(user)) {
+		if (this.emailExists(user.getMail()) || this.usernameExists(user.getUsername())) {
 			throw new BusinessException(
-					String.format("Já existe um usuário cadastrado com o e-mail %s", user.getMail()));
+					String.format("Já existe um usuário cadastrado com o e-mail: %s ou username: %s", user.getMail(), user.getUsername()));
 		}
 		
 		if (user.isNew()) {
@@ -77,17 +82,19 @@ public class UserService {
 	}
 	
 	@Transactional
-	public void updatePassword(Long userId, String oldPassword, String newPassword) {
-		//User user = getUserById(userId);
+	public User updatePasswordUser(PasswordUpdateRequest newPassword) {
 		
-		/*
-		 * if (!passwordEncoder.matches(oldPassword, user.getPassword())) { throw new
-		 * BusinessException("Senha atual informada não coincide com a senha do usuário."
-		 * ); }
-		 * 
-		 * user.setPassword(passwordEncoder.encode(newPassword));
-		 */
-
+		var user = this.getUserById(Long.parseLong(newPassword.getIdUser()));
+		
+		if(!newPassword.getNewPassword().equals(newPassword.getReNewPawword())) {
+			throw new BusinessException(
+					String.format("As senhas não coincidem."));
+		}
+		
+		//user.setPassword(passwordEncoder.encode(newPassword));
+		user.setPassword(newPassword.getNewPassword());
+		
+		return userRepository.save(user);
 	}
 
 	@Transactional
@@ -148,6 +155,31 @@ public class UserService {
 		User user = userRepository.findById(id).get();
 		user.getContactList().remove(contact);
 		return user;
+	}
+	
+	public Boolean emailExists(String email) {
+		return userRepository.existsByMail(email);
+	}
+	
+	public Boolean usernameExists(String login) {
+		return userRepository.existsByUsername(login);
+	}
+
+	public void generateTokenUpdatePassword(MailRequest mailRequest) {
+		
+		var user = userRepository.findByMail(mailRequest.getMail()).orElseThrow(() -> new UserNotFoundException(mailRequest.getMail().toString()));
+		UUID uuid = UUID.randomUUID();
+        String uuidAsString = uuid.toString();
+		
+		var userToken = UserTokenPassword.builder()
+				.mailUser(user.getMail())
+				.dateRegister(OffsetDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()))
+				.identify(uuidAsString)
+				.token("876009")
+				.build();
+		
+		userTokenPasswordRespository.save(userToken);
+
 	}
 
 }

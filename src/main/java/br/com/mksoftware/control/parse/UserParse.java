@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import br.com.mksoftware.control.dtos.response.UserDetailResponse;
 import br.com.mksoftware.control.dtos.response.UserResponse;
 import br.com.mksoftware.control.dtos.resquest.UserRequest;
 import br.com.mksoftware.control.entities.User;
@@ -24,6 +25,10 @@ public class UserParse {
 
 	public UserResponse toModelResponse(User user) {
 		return modelMapper.map(user, UserResponse.class);
+	}
+	
+	public UserDetailResponse toModelDetailResponse(User user) {
+		return modelMapper.map(user, UserDetailResponse.class);
 	}
 	
 	public List<UserResponse> toCollectionModel(List<User> users) {

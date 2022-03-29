@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import br.com.mksoftware.control.entities.Function;
+import br.com.mksoftware.control.entities.System;
 import br.com.mksoftware.control.entities.TagPermission;
 import br.com.mksoftware.control.exceptions.FunctionNotFoundException;
 import br.com.mksoftware.control.repository.FunctionRepository;
@@ -25,6 +26,12 @@ public class FunctionService {
 	private TagPermissionRespository tagPermissionRepository;
 
 	public List<Function> getAll() {
+		var functions = functionRepository.findAll();
+		return functions;
+	}
+	
+	
+	public List<Function> getFunctionsBySystem(System system) {
 		var functions = functionRepository.findAll();
 		return functions;
 	}
