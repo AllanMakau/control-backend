@@ -5,6 +5,7 @@ import java.time.OffsetDateTime;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -86,6 +87,19 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	
 	
+	@ExceptionHandler(AccessDeniedException.class)
+	public ResponseEntity<?> handleAccessDenied(AccessDeniedException ex, WebRequest request) {
+		
+		HttpStatus status = HttpStatus.FORBIDDEN;
+		ProblemType problemType = ProblemType.ACCESS_DENIED;
+		String detail = ex.getMessage();
+		
+		Problem problem = createProblemBuilder(status, problemType, detail)
+				.userMessage(detail)
+				.build();
+		
+		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+	}
 	
 	private Problem.ProblemBuilder createProblemBuilder(HttpStatus status,
 			ProblemType problemType, String detail) {

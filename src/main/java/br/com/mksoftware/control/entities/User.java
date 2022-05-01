@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -97,7 +98,7 @@ public class User implements Serializable {
 	private Set<System> systemList = new HashSet<System>();
 
 	@JoinTable(name = "tb_user_Function", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "function_id"))
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Function> functionList = new HashSet<Function>();
 
 	

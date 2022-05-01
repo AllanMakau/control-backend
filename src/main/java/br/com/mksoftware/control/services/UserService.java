@@ -9,6 +9,7 @@ import java.util.UUID;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.mksoftware.control.dtos.resquest.MailRequest;
@@ -32,8 +33,8 @@ public class UserService {
 	@Autowired
 	private UserRespository userRepository;
 	
-	//@Autowired
-	//private PasswordEncoder passwordEncoder;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@Autowired
 	private FunctionRepository functionRepository;
@@ -70,7 +71,7 @@ public class UserService {
 		}
 		
 		if (user.isNew()) {
-			//user.setSenha(passwordEncoder.encode(usuario.getSenha()));
+			user.setPassword(passwordEncoder.encode(user.getPassword()));
 		}
 		
 		return userRepository.save(user);
@@ -91,7 +92,6 @@ public class UserService {
 					String.format("As senhas não coincidem."));
 		}
 		
-		//user.setPassword(passwordEncoder.encode(newPassword));
 		user.setPassword(newPassword.getNewPassword());
 		
 		return userRepository.save(user);

@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -43,7 +44,7 @@ public class Function implements Serializable{
 	
 	
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "function_tag", joinColumns = @JoinColumn(name = "function_id"),
 			inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<TagPermission> taglist = new HashSet<TagPermission>();

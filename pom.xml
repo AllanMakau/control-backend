@@ -17,6 +17,9 @@
 	<properties>
 		<java.version>11</java.version>
 		<modelmapper.version>2.3.0</modelmapper.version>
+		<oauth2-oidc-sdk.version>6.21.2</oauth2-oidc-sdk.version>
+		<spring-security-oauth2.version>2.3.7.RELEASE</spring-security-oauth2.version>
+		<spring-security-jwt.version>1.0.11.RELEASE</spring-security-jwt.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -33,6 +36,17 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -58,15 +72,30 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>
+			spring-boot-starter-oauth2-resource-server
+		</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.7.0</version>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>
