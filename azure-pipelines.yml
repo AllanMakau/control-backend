@@ -17,7 +17,7 @@ stages:
       displayName: mvn package
       inputs:
         mavenPomFile: 'pom.xml'
-        goals: 'package -P$(lib_stage)'
+        goals: 'package -Pdev'
         publishJUnitResults: false
         testResultsFiles: '**/surefire-reports/TEST-*.xml'
         javaHomeOption: 'JDKVersion'
