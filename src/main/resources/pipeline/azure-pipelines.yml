@@ -26,17 +26,6 @@ stages:
         effectivePomSkip: false
         sonarQubeRunAnalysis: false
 
-    - task: AzureCLI@2
-      displayName: docker build && docker push
-      inputs:
-        azureSubscription: $(lib_service_conn)
-        scriptType: 'bash'
-        scriptLocation: 'inlineScript'
-        inlineScript: |
-          az acr login --name $(lib_container_registry)
-          docker build -t $(var_service_name) -f pipeline/docker/Dockerfile --build-arg stage=$(lib_stage) .
-          docker tag $(var_service_name) $(lib_container_registry)/$(var_service_name)
-          docker push $(lib_container_registry)/$(var_service_name)
 
 
 
