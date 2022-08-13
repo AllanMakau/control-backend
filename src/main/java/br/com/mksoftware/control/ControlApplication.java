@@ -8,6 +8,7 @@ public class ControlApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ControlApplication.class, args);
+		System.out.println("Iniciando");
 	}
 
 }
