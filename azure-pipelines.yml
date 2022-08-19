@@ -8,10 +8,10 @@ stages:
 
 #### Build App Stage ###
 - stage: build_app
-  dependsOn: []
+  displayName: "build-validation"
   jobs:
   - job: build_app
-    displayName: build_app
+    displayName: build-validation
     pool:
       vmImage: ubuntu-latest
     steps:
