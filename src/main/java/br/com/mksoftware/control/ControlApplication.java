@@ -7,8 +7,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ControlApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(ControlApplication.class, args);
+<<<<<<< HEAD
 		System.out.println("Iniciando 125346ff");
+=======
+
+>>>>>>> fb5aca783bd19b560b607b0c5f6a27e32d4a667d
 	}
 
 }
