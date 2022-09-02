@@ -34,7 +34,7 @@ public class SystemResource {
 		return ResponseEntity.ok(systemParse.toCollectionModel(systems));
 	}
 
-	@PreAuthorize("hasRole('ATUAUSER 1')") 
+	//@PreAuthorize("hasRole('ATUAUSER 1')") 
 	//@PreAuthorize("hasAuthority('ATUAUSER 1')")
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> saveSystem(@RequestBody @Valid SystemRequest systemRequest) {
