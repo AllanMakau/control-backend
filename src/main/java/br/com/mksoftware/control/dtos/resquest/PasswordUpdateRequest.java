@@ -13,8 +13,13 @@ public class PasswordUpdateRequest {
 	
 	
 	@JsonProperty("codigo_usuario")
-	@NotBlank
 	private String idUser;
+	
+	@JsonProperty("email")
+	private String mail;
+	
+	@JsonProperty("token")
+	private Long token;
 	
 	@JsonProperty("nova_senha")
 	@NotBlank

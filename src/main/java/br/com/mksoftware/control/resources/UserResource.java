@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.mksoftware.control.dtos.resquest.ContactRequest;
 import br.com.mksoftware.control.dtos.resquest.FunctionRequest;
-import br.com.mksoftware.control.dtos.resquest.MailRequest;
 import br.com.mksoftware.control.dtos.resquest.PasswordUpdateRequest;
 import br.com.mksoftware.control.entities.User;
 import br.com.mksoftware.control.parse.ContactParse;
@@ -55,11 +54,6 @@ public class UserResource {
 		return ResponseEntity.ok(newUser);
 	}
 	
-	@RequestMapping(value = "/generate-token/update-password", method = RequestMethod.POST )
-	public ResponseEntity<?> saveUser( @RequestBody MailRequest mailRequest){
-		userService.generateTokenUpdatePassword(mailRequest);
-		return ResponseEntity.ok().build();
-	}
 	
 	@RequestMapping(value = "/{id}",method = RequestMethod.GET)
 	public ResponseEntity<?> getUserById(@PathVariable Long id){

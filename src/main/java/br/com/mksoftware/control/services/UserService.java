@@ -9,9 +9,12 @@ import java.util.UUID;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
+import br.com.mksoftware.control.config.security.UserSS;
 import br.com.mksoftware.control.dtos.resquest.MailRequest;
 import br.com.mksoftware.control.dtos.resquest.PasswordUpdateRequest;
 import br.com.mksoftware.control.entities.Contact;
@@ -25,6 +28,7 @@ import br.com.mksoftware.control.repository.FunctionRepository;
 import br.com.mksoftware.control.repository.SystemRepository;
 import br.com.mksoftware.control.repository.UserRespository;
 import br.com.mksoftware.control.repository.UserTokenPasswordRespository;
+import br.com.mksoftware.control.utils.TokenGenarate;
 
 @Service
 public class UserService {
@@ -59,6 +63,15 @@ public class UserService {
 	@Transactional
 	public void deleteUserById(Long id) {
 		userRepository.deleteById(id);
+	}
+	
+	public static UserSS authenticated() {
+		try {
+			return (UserSS) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		}
+		catch (Exception e) {
+			return null;
+		}
 	}
 	
 	@Transactional
@@ -96,7 +109,7 @@ public class UserService {
 		
 		return userRepository.save(user);
 	}
-
+	
 	@Transactional
 	public User activate(Long id) {
 		User user = userRepository.findById(id).get();
@@ -165,21 +178,6 @@ public class UserService {
 		return userRepository.existsByUsername(login);
 	}
 
-	public void generateTokenUpdatePassword(MailRequest mailRequest) {
-		
-		var user = userRepository.findByMail(mailRequest.getMail()).orElseThrow(() -> new UserNotFoundException(mailRequest.getMail().toString()));
-		UUID uuid = UUID.randomUUID();
-        String uuidAsString = uuid.toString();
-		
-		var userToken = UserTokenPassword.builder()
-				.mailUser(user.getMail())
-				.dateRegister(OffsetDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()))
-				.identify(uuidAsString)
-				.token("876009")
-				.build();
-		
-		userTokenPasswordRespository.save(userToken);
 
-	}
 
 }

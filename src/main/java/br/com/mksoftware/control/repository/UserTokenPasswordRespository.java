@@ -7,5 +7,7 @@ import br.com.mksoftware.control.entities.UserTokenPassword;
 
 @Repository
 public interface UserTokenPasswordRespository extends JpaRepository<UserTokenPassword, Long>{
+	
+	UserTokenPassword findByMailUser(String mail);
 
 }
