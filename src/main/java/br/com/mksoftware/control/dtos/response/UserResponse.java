@@ -46,6 +46,9 @@ public class UserResponse {
 	@JsonProperty(value = "ativo")
 	private Boolean isActive;
 	
+	@JsonProperty(value = "image")
+	private String pathImage;
+	
 	@JsonProperty(value = "data_registro")
 	private OffsetDateTime dateRegistration;
 	

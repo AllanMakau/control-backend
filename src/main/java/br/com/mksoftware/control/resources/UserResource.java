@@ -125,5 +125,30 @@ public class UserResource {
 		User userUpdated = userService.removeContact(id, contact); 
 		return ResponseEntity.ok(userParse.toModelResponse(userUpdated));
 	}
+	
+	@RequestMapping(value = "/{idUser}/image/", method = RequestMethod.POST )
+	public ResponseEntity<Void> addImage(@PathVariable Long idUser, @RequestBody String base64 ){
+		userService.saveImage(idUser, base64);
+		return ResponseEntity.ok().build();
+	}
+	
+	@RequestMapping(value = "/{idUser}/image/", method = RequestMethod.DELETE )
+	public ResponseEntity<Void> removeImage(@PathVariable Long idUser ){
+		userService.removeImage(idUser);
+		return ResponseEntity.ok().build();
+	}
+	
+	@RequestMapping(value = "/{idUser}/image/", method = RequestMethod.PUT )
+	public ResponseEntity<Void> updateImage(@PathVariable Long idUser, @RequestBody String base64  ){
+		userService.updateImage(idUser, base64);
+		return ResponseEntity.ok().build();
+	}
+	
+	@RequestMapping(value = "/{idUser}/image/", method = RequestMethod.GET )
+	public ResponseEntity<?> getImage(@PathVariable Long idUser ){
+		userService.getImage(idUser);
+		return ResponseEntity.ok().build();
+	}
+	
 
 }

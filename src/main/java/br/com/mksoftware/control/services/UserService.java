@@ -1,34 +1,33 @@
 package br.com.mksoftware.control.services;
 
-import java.time.Instant;
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
-import java.util.UUID;
 
 import javax.transaction.Transactional;
+import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import br.com.mksoftware.control.config.security.UserSS;
-import br.com.mksoftware.control.dtos.resquest.MailRequest;
 import br.com.mksoftware.control.dtos.resquest.PasswordUpdateRequest;
 import br.com.mksoftware.control.entities.Contact;
 import br.com.mksoftware.control.entities.Function;
 import br.com.mksoftware.control.entities.System;
 import br.com.mksoftware.control.entities.User;
-import br.com.mksoftware.control.entities.UserTokenPassword;
 import br.com.mksoftware.control.exceptions.BusinessException;
 import br.com.mksoftware.control.exceptions.UserNotFoundException;
 import br.com.mksoftware.control.repository.FunctionRepository;
 import br.com.mksoftware.control.repository.SystemRepository;
 import br.com.mksoftware.control.repository.UserRespository;
 import br.com.mksoftware.control.repository.UserTokenPasswordRespository;
-import br.com.mksoftware.control.utils.TokenGenarate;
 
 @Service
 public class UserService {
@@ -46,8 +45,8 @@ public class UserService {
 	@Autowired
 	private SystemRepository systemRepository;
 	
-	@Autowired
-	private UserTokenPasswordRespository userTokenPasswordRespository;
+	@Value("${path.image}")
+	private String pathImage;
 	
 
 	public List<User> getAll() {
@@ -176,6 +175,58 @@ public class UserService {
 	
 	public Boolean usernameExists(String login) {
 		return userRepository.existsByUsername(login);
+	}
+
+	
+	public void saveImage(Long idUser, String base64) {
+		
+		User user = userRepository.findById(idUser).get();
+
+        String[] strings = base64.split(",");
+        String extension;
+        String description;
+        
+        description = user.getNickname()+user.getSocialNumber();
+        
+        switch (strings[0]) {//check image's extension
+            case "data:image/jpeg;base64":
+                extension = "jpeg";
+                break;
+            case "data:image/png;base64":
+                extension = "png";
+                break;
+            default://should write cases for more images types
+                extension = "jpg";
+                break;
+        }
+        
+        byte[] data = DatatypeConverter.parseBase64Binary(strings[1]);
+        String path = pathImage+"\\"+description+ "." +extension;
+        File file = new File(path);
+        try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file))) {
+            outputStream.write(data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        user.setPathImage(description+ "." +extension);
+        userRepository.save(user);
+		
+	}
+
+	public void removeImage(Long idUser) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void updateImage(Long idUser, String base64) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void getImage(Long idUser) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

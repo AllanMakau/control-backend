@@ -72,6 +72,9 @@ public class User implements Serializable {
 	@Column(nullable = false)
 	private Boolean isActive;
 	
+	@Column(nullable = true)
+	private String pathImage;
+	
 	@CreationTimestamp
 	@Column(nullable = false, columnDefinition = "datetime")
 	private OffsetDateTime dateRegistration;
