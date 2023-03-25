@@ -8,12 +8,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "TB_DEPARTAMENT")
 public class Department implements Serializable {
@@ -32,7 +36,7 @@ public class Department implements Serializable {
 	
 	private String description;
 	
-	private Boolean isActive = true;
+	private Boolean isActive;
 
 
 	public void activate() {

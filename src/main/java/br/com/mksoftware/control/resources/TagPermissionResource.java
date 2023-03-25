@@ -6,7 +6,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +37,7 @@ public class TagPermissionResource {
 		return ResponseEntity.ok(tagPermissionParse.toCollectionModel(tagPermissions));
 	}
 	
-	@PreAuthorize("hasAuthority('ATUAUSER 1')")
+	//@PreAuthorize("hasAuthority('ATUAUSER 1')")
 	@RequestMapping(method = RequestMethod.POST )
 	public ResponseEntity<?> saveTagPermissio( @RequestBody @Valid TagPermissionRequest tagPermissionRequest){
 		TagPermission tagPermission = tagPermissionParse.toDomainObject(tagPermissionRequest);

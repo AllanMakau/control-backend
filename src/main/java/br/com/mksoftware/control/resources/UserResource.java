@@ -86,65 +86,59 @@ public class UserResource {
 		return ResponseEntity.ok(userParse.toModelResponse(userService.updatePasswordUser(newPassowrd)));
 	}
 	
-	@RequestMapping(value = "/{id}/activate/", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{id}/activate", method = RequestMethod.DELETE)
 	public ResponseEntity<?> activateUser(@PathVariable Long id ){
 		User userUpdated = userService.activate(id); 
 		return ResponseEntity.ok(userParse.toModelResponse(userUpdated));
 	}
 	
-	@RequestMapping(value = "/{id}/inactivate/", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{id}/inactivate", method = RequestMethod.DELETE)
 	public ResponseEntity<?> inactivateUser(@PathVariable Long id ){
 		User userUpdated = userService.inactivate(id); 
 		return ResponseEntity.ok(userParse.toModelResponse(userUpdated));
 	}
 	
-	@RequestMapping(value = "/{id}/add-function/", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "/{id}/add-function", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
 	public ResponseEntity<?> addFunction(@PathVariable Long id, @RequestBody FunctionRequest functionRequest ){
 		var function = functionParse.toDomainObject(functionRequest);
 		User userUpdated = userService.addFunction(id, function); 
 		return ResponseEntity.ok(userParse.toModelResponse(userUpdated));
 	}
 
-	@RequestMapping(value = "/{id}/remove-function/", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json" )
+	@RequestMapping(value = "/{id}/remove-function", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json" )
 	public ResponseEntity<?> removeFunction(@PathVariable Long id, @RequestBody FunctionRequest functionRequest ){
 		var function = functionParse.toDomainObject(functionRequest);
 		User userUpdated = userService.removeFunction(id, function); 
 		return ResponseEntity.ok(userParse.toModelResponse(userUpdated));
 	}
 	
-	@RequestMapping(value = "/{id}/add-contact/", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "/{id}/add-contact", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
 	public ResponseEntity<?> addContact(@PathVariable Long id, @RequestBody ContactRequest contactRequest ){
 		var contact = contactParse.toDomainObject(contactRequest);
 		User userUpdated = userService.addContact(id, contact); 
 		return ResponseEntity.ok(userParse.toModelResponse(userUpdated));
 	}
 
-	@RequestMapping(value = "/{id}/remove-contact/", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json" )
+	@RequestMapping(value = "/{id}/remove-contact", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json" )
 	public ResponseEntity<?> removeContact(@PathVariable Long id, @RequestBody ContactRequest contactRequest ){
 		var contact = contactParse.toDomainObject(contactRequest);
 		User userUpdated = userService.removeContact(id, contact); 
 		return ResponseEntity.ok(userParse.toModelResponse(userUpdated));
 	}
 	
-	@RequestMapping(value = "/{idUser}/image/", method = RequestMethod.POST )
+	@RequestMapping(value = "/{idUser}/image", method = RequestMethod.POST )
 	public ResponseEntity<Void> addImage(@PathVariable Long idUser, @RequestBody String base64 ){
 		userService.saveImage(idUser, base64);
 		return ResponseEntity.ok().build();
 	}
 	
-	@RequestMapping(value = "/{idUser}/image/", method = RequestMethod.DELETE )
+	@RequestMapping(value = "/{idUser}/image", method = RequestMethod.DELETE )
 	public ResponseEntity<Void> removeImage(@PathVariable Long idUser ){
 		userService.removeImage(idUser);
 		return ResponseEntity.ok().build();
 	}
 	
-	@RequestMapping(value = "/{idUser}/image/", method = RequestMethod.PUT )
-	public ResponseEntity<Void> updateImage(@PathVariable Long idUser, @RequestBody String base64  ){
-		userService.updateImage(idUser, base64);
-		return ResponseEntity.ok().build();
-	}
-	
-	@RequestMapping(value = "/{idUser}/image/", method = RequestMethod.GET )
+	@RequestMapping(value = "/{idUser}/image", method = RequestMethod.GET )
 	public ResponseEntity<?> getImage(@PathVariable Long idUser ){
 		userService.getImage(idUser);
 		return ResponseEntity.ok().build();

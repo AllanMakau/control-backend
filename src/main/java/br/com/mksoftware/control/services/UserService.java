@@ -27,7 +27,6 @@ import br.com.mksoftware.control.exceptions.UserNotFoundException;
 import br.com.mksoftware.control.repository.FunctionRepository;
 import br.com.mksoftware.control.repository.SystemRepository;
 import br.com.mksoftware.control.repository.UserRespository;
-import br.com.mksoftware.control.repository.UserTokenPasswordRespository;
 
 @Service
 public class UserService {
@@ -215,17 +214,17 @@ public class UserService {
 	}
 
 	public void removeImage(Long idUser) {
-		// TODO Auto-generated method stub
+		
+		User user = userRepository.findById(idUser).get();
+		String path = pathImage+"\\"+user.getPathImage();
+        File file = new File(path);
+        file.delete();
 		
 	}
 
-	public void updateImage(Long idUser, String base64) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	public void getImage(Long idUser) {
-		// TODO Auto-generated method stub
+	public Byte[] getImage(Long idUser) {
+		return null;
 		
 	}
 

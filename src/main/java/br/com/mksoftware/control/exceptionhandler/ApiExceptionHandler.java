@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import br.com.mksoftware.control.exceptions.BusinessException;
 import br.com.mksoftware.control.exceptions.EntityInUse;
 import br.com.mksoftware.control.exceptions.EntityNotFoundException;
+import br.com.mksoftware.control.exceptions.SendMqErrorException;
 
 
 @ControllerAdvice
@@ -100,6 +101,23 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		
 		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
 	}
+	
+	@ExceptionHandler(SendMqErrorException.class)
+	public ResponseEntity<?> handleGenerateTokenError(SendMqErrorException ex, WebRequest request) {
+		
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		ProblemType problemType = ProblemType.ERRO_DE_SISTEMA;
+		String detail = ex.getMessage();
+		
+		Problem problem = createProblemBuilder(status, problemType, detail)
+				.userMessage(detail)
+				.build();
+		
+		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+	}
+	
+	
+	
 	
 	private Problem.ProblemBuilder createProblemBuilder(HttpStatus status,
 			ProblemType problemType, String detail) {

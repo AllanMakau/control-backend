@@ -8,13 +8,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 
 @Data
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "TB_SYSTEM")
 public class System implements Serializable{
 
@@ -30,7 +34,7 @@ public class System implements Serializable{
 	private String name;
 	private String abbreviation;
 	private String description;
-	private Boolean isActive = true;;
+	private Boolean isActive;
 
 
 	public void activate() {
@@ -40,4 +44,5 @@ public class System implements Serializable{
 	public void inactivate() {
 		setIsActive(false);
 	}
+
 }

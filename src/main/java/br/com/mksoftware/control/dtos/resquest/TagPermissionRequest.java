@@ -22,5 +22,9 @@ public class TagPermissionRequest {
 	@NotBlank(message = "descrição não pode ser nulo")
 	@JsonProperty(value = "descricao")
 	private String description;
+	
+	@NotBlank(message = "ativo")
+	@JsonProperty(value = "ativo")
+	private String isActive;
 
 }

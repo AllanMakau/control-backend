@@ -12,14 +12,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "TB_FUNCTION")
 public class Function implements Serializable{
@@ -36,21 +39,14 @@ public class Function implements Serializable{
 	private Long id;
 	private String name;
 	private String description;
-	private Boolean isActive = true;
-	
-	
-	@ManyToOne()
-	private System system;
-	
-	
+	private Boolean isActive;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "function_tag", joinColumns = @JoinColumn(name = "function_id"),
 			inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<TagPermission> taglist = new HashSet<TagPermission>();
 	
-
-
+	
 	public boolean addTag(TagPermission tag) {
 		return getTaglist().add(tag);
 	}
@@ -67,6 +63,12 @@ public class Function implements Serializable{
 	public void inactivate() {
 		setIsActive(false);
 	}
+
+	
+
+
+
+
  
 
 	

@@ -1,9 +1,14 @@
 package br.com.mksoftware.control.services;
 
+import java.io.StringWriter;
 import java.util.List;
 
 import javax.transaction.Transactional;
+import javax.xml.bind.JAXB;
 
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +19,9 @@ import br.com.mksoftware.control.repository.DepartamentRespository;
 @Service
 public class DepartmentService {
 	
+
+	private static final Logger logger 
+    = LoggerFactory.getLogger(DepartmentService.class);
 	
 	@Autowired
 	private DepartamentRespository departmentRepository;
@@ -29,6 +37,16 @@ public class DepartmentService {
 	}
 	
 	public Department saveDepartment(Department department) {
+		
+		JSONObject jsonObject = new JSONObject(department);
+		logger.info("User JSON: {}", jsonObject);
+		
+		StringWriter sw = new StringWriter();
+		JAXB.marshal(department, sw);
+		String xmlString = sw.toString();
+		
+		logger.info("User XML: {}", xmlString);
+		
 		return departmentRepository.save(department);
 	}
 

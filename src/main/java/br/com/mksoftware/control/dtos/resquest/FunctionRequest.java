@@ -24,6 +24,10 @@ public class FunctionRequest {
 	@JsonProperty(value = "descricao")
 	private String description;
 	
+	@NotBlank(message = "ativo")
+	@JsonProperty(value = "ativo")
+	private String isActive;
+	
 	@JsonProperty(value = "sistema")
 	private SystemRequest system;
 	

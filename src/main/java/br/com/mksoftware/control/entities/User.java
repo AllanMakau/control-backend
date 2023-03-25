@@ -2,6 +2,7 @@ package br.com.mksoftware.control.entities;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,11 +24,14 @@ import javax.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
-@Entity
+@Entity@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "TB_USER")
 public class User implements Serializable {
@@ -94,7 +98,7 @@ public class User implements Serializable {
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "idUser")
-	private List<Contact> contactList;
+	private List<Contact> contactList = new ArrayList<Contact>();
 
 	@JoinTable(name = "tb_user_System", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "system_id"))
 	@ManyToMany

@@ -19,7 +19,7 @@ import br.com.mksoftware.control.services.DepartmentService;
 
 
 @RestController
-@RequestMapping(value = "/department")
+@RequestMapping(value = "/departament")
 public class DepartmentResource {
 	
 	
@@ -68,13 +68,13 @@ public class DepartmentResource {
 	}
 	
 	
-	@RequestMapping(value = "/{id}/activate/", method = RequestMethod.PUT)
+	@RequestMapping(value = "/{id}/activate", method = RequestMethod.PUT)
 	public ResponseEntity<?> activateUser(@PathVariable Long id ){
 		Department departmentUpdated = departmentService.activate(id); 
 		return ResponseEntity.ok(departmentParse.toModelResponse(departmentUpdated));
 	}
 	
-	@RequestMapping(value = "/{id}/inactivate/", method = RequestMethod.PUT)
+	@RequestMapping(value = "/{id}/inactivate", method = RequestMethod.PUT)
 	public ResponseEntity<?> inactivateUser(@PathVariable Long id ){
 		Department departmentUpdated = departmentService.inactivate(id); 
 		return ResponseEntity.ok(departmentParse.toModelResponse(departmentUpdated));

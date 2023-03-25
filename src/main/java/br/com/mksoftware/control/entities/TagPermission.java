@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,6 +16,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@AllArgsConstructor
 @Table(name = "TB_TAGPERMISSION")
 public class TagPermission implements Serializable {
 
@@ -29,9 +31,11 @@ public class TagPermission implements Serializable {
 	private Long id;
 	private String name;
 	private String description;
-	private Boolean isActive = true;;
+	private Boolean isActive;
 	
-	
+	public TagPermission() {
+		super();
+	}
 	
 	public void activate() {
 		setIsActive(true);
@@ -40,6 +44,8 @@ public class TagPermission implements Serializable {
 	public void inactivate() {
 		setIsActive(false);
 	}
+
+	
 
 	
 
