@@ -27,7 +27,6 @@ public class SystemRequest {
 	@JsonProperty(value = "descricao")
 	private String description;
 	
-	@NotBlank(message = "ativo")
 	@JsonProperty(value = "ativo")
-	private String isActive;
+	private Boolean isActive;
 }

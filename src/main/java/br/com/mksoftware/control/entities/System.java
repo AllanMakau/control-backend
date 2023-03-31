@@ -11,14 +11,12 @@ import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 
 @Data
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "TB_SYSTEM")
 public class System implements Serializable{
 
@@ -35,7 +33,11 @@ public class System implements Serializable{
 	private String abbreviation;
 	private String description;
 	private Boolean isActive;
-
+	
+	public System() {
+		super();
+	}
+	
 
 	public void activate() {
 		setIsActive(true);

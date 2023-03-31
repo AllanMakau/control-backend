@@ -30,13 +30,10 @@ public class SystemService {
 		systemRepository.deleteById(id);
 	}
 	
-	public System saveSystem(System system) {
+	public System saveOrUpdateSystem(System system) {
 		return systemRepository.save(system);
 	}
 
-	public System updateSystem(System system) {
-		return systemRepository.save(system);
-	}
 
 	@Transactional
 	public System activate(Long id) {

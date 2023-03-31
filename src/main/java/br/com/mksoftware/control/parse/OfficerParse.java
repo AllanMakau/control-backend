@@ -30,5 +30,10 @@ public class OfficerParse {
 				.map(officer -> toModelResponse(officer))
 				.collect(Collectors.toList());  
 	}
+	
+	public Officer toOfficerDomain(OfficerRequest officerRequest) {
+		
+		return modelMapper.map(officerRequest, Officer.class);
+	}
 
 }

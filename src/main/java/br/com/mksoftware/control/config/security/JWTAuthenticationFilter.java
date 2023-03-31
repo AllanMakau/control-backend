@@ -63,6 +63,15 @@ private AuthenticationManager authenticationManager;
         res.addHeader("access-control-expose-headers", "Authorization");
 	}
 	
+	@Override
+		protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+				AuthenticationException failed) throws IOException, ServletException {
+			response.setStatus(401);
+			response.setContentType("application/json");
+			response.getWriter().append(this.json());
+			super.unsuccessfulAuthentication(request, response, failed);
+		}
+	
 	private class JWTAuthenticationFailureHandler implements AuthenticationFailureHandler {
 		 
         @Override
@@ -72,15 +81,16 @@ private AuthenticationManager authenticationManager;
             response.setContentType("application/json"); 
             response.getWriter().append(json());
         }
-        
-        private String json() {
-            long date = new Date().getTime();
-            return "{\"timestamp\": " + date + ", "
-                + "\"status\": 401, "
-                + "\"error\": \"Não autorizado\", "
-                + "\"message\": \"Email ou senha inválidos\", "
-                + "\"path\": \"/login\"}";
-        }
+       
     }
+	
+	 private String json() {
+         long date = new Date().getTime();
+         return "{\"timestamp\": " + date + ", "
+             + "\"status\": 401, "
+             + "\"error\": \"Não autorizado\", "
+             + "\"message\": \"Email ou senha inválidos\", "
+             + "\"path\": \"/login\"}";
+     }
 
 }

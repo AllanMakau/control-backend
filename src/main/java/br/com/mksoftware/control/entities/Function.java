@@ -1,5 +1,4 @@
 package br.com.mksoftware.control.entities;
-
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,9 +20,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "TB_FUNCTION")
 public class Function implements Serializable{
 	
@@ -42,7 +41,7 @@ public class Function implements Serializable{
 	private Boolean isActive;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "function_tag", joinColumns = @JoinColumn(name = "function_id"),
+	@JoinTable(name = "tb_function_tag", joinColumns = @JoinColumn(name = "function_id"),
 			inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<TagPermission> taglist = new HashSet<TagPermission>();
 	

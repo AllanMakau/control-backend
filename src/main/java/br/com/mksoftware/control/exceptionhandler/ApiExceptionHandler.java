@@ -5,7 +5,9 @@ import java.time.OffsetDateTime;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.support.MethodArgumentNotValidException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -112,6 +114,25 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		Problem problem = createProblemBuilder(status, problemType, detail)
 				.userMessage(detail)
 				.build();
+		
+		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+	}
+	
+	
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<?> handlerValidationErros(MethodArgumentNotValidException ex, WebRequest request) {
+		
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		ProblemType problemType = ProblemType.ERRO_DE_SISTEMA;
+		String detail = ex.getMessage();
+		
+		ValidationError problem = (ValidationError) createProblemBuilder(status, problemType, detail)
+				.userMessage(detail)
+				.build();
+		
+		for(FieldError x : ex.getBindingResult().getFieldErrors()) {
+			problem.addErro(x.getField(), x.getDefaultMessage());
+		}
 		
 		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
 	}

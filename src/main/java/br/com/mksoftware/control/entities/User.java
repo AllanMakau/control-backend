@@ -24,7 +24,9 @@ import javax.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import br.com.mksoftware.control.dtos.resquest.UserUpdateRequest;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -32,6 +34,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "TB_USER")
 public class User implements Serializable {
@@ -80,11 +83,11 @@ public class User implements Serializable {
 	private String pathImage;
 	
 	@CreationTimestamp
-	@Column(nullable = false, columnDefinition = "datetime")
+	@Column(nullable = true, columnDefinition = "datetime")
 	private OffsetDateTime dateRegistration;
 	
 	@UpdateTimestamp
-	@Column(nullable = false, columnDefinition = "datetime")
+	@Column(nullable = true, columnDefinition = "datetime")
 	private OffsetDateTime dateUpdated;
 
 	@ManyToOne
@@ -96,14 +99,14 @@ public class User implements Serializable {
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Address address;
 
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "idUser")
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	private List<Contact> contactList = new ArrayList<Contact>();
 
-	@JoinTable(name = "tb_user_System", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "system_id"))
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "tb_user_System", joinColumns = @JoinColumn(name = "user_id"), 
+			inverseJoinColumns = @JoinColumn(name = "system_id"))
 	private Set<System> systemList = new HashSet<System>();
-
+	
 	@JoinTable(name = "tb_user_Function", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "function_id"))
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Function> functionList = new HashSet<Function>();
@@ -143,6 +146,11 @@ public class User implements Serializable {
 	
 	public void inactivate() {
 		setIsActive(false);
+	}
+	
+	public User updateUser(UserUpdateRequest user) { 
+		
+		return null;
 	}
 
 }

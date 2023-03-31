@@ -21,6 +21,10 @@ public class SystemParse {
 	public System toDomainObject(SystemRequest systemRequest) {
 		return modelMapper.map(systemRequest, System.class);
 	}
+	
+	public void toDomainInputSystem(SystemRequest systemRequest, System system) {
+		 modelMapper.map(systemRequest, system);
+	}
 
 	public SystemResponse toModelResponse(System system) {
 		return modelMapper.map(system, SystemResponse.class);

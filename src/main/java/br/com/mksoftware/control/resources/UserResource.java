@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.mksoftware.control.dtos.resquest.ContactRequest;
 import br.com.mksoftware.control.dtos.resquest.FunctionRequest;
 import br.com.mksoftware.control.dtos.resquest.PasswordUpdateRequest;
+import br.com.mksoftware.control.dtos.resquest.UserRequest;
+import br.com.mksoftware.control.dtos.resquest.UserUpdateRequest;
 import br.com.mksoftware.control.entities.User;
 import br.com.mksoftware.control.parse.ContactParse;
 import br.com.mksoftware.control.parse.FunctionParse;
@@ -49,9 +51,9 @@ public class UserResource {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST )
-	public ResponseEntity<?> saveUser( @RequestBody User user){
-		User newUser = userService.saveUser(user);
-		return ResponseEntity.ok(newUser);
+	public ResponseEntity<?> saveUser( @RequestBody UserRequest user){
+		User newUser = userService.saveUser(userParse.toDomainObject(user));
+		return ResponseEntity.ok(userParse.toModelResponse(newUser));
 	}
 	
 	
@@ -75,10 +77,11 @@ public class UserResource {
 	}
 	
 	
-	@RequestMapping( method = RequestMethod.PUT)
-	public ResponseEntity<?> update( @RequestBody User user){
-		User userUpdated = userService.updateUser(user); 
-		return ResponseEntity.ok(userUpdated);
+	@RequestMapping(value = "/{id}",method = RequestMethod.PUT)
+	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody UserUpdateRequest user){
+		var useResponse = userService.updateUser( id, user);
+		
+		return ResponseEntity.ok(userParse.toModelResponse(useResponse));
 	}
 	
 	@RequestMapping(value = "/update-password", method = RequestMethod.PUT)

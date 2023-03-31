@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -18,12 +19,14 @@ import org.springframework.stereotype.Service;
 
 import br.com.mksoftware.control.config.security.UserSS;
 import br.com.mksoftware.control.dtos.resquest.PasswordUpdateRequest;
+import br.com.mksoftware.control.dtos.resquest.UserUpdateRequest;
 import br.com.mksoftware.control.entities.Contact;
 import br.com.mksoftware.control.entities.Function;
 import br.com.mksoftware.control.entities.System;
 import br.com.mksoftware.control.entities.User;
 import br.com.mksoftware.control.exceptions.BusinessException;
 import br.com.mksoftware.control.exceptions.UserNotFoundException;
+import br.com.mksoftware.control.parse.OfficerParse;
 import br.com.mksoftware.control.repository.FunctionRepository;
 import br.com.mksoftware.control.repository.SystemRepository;
 import br.com.mksoftware.control.repository.UserRespository;
@@ -43,6 +46,9 @@ public class UserService {
 	
 	@Autowired
 	private SystemRepository systemRepository;
+	
+	@Autowired
+	private OfficerParse officerParse;
 	
 	@Value("${path.image}")
 	private String pathImage;
@@ -72,7 +78,7 @@ public class UserService {
 		}
 	}
 	
-	@Transactional
+
 	public User saveUser(User user) {
 		
 		
@@ -85,12 +91,14 @@ public class UserService {
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
 		}
 		
-		return userRepository.save(user);
+		
+		return userRepository.saveAndFlush(user);
 	}
 
 	@Transactional
-	public User updateUser(User user) {
-		return userRepository.save(user);
+	public User updateUser(Long id, UserUpdateRequest user) {
+		User userNew = this.userUpdateBuild(id, user);
+		return userRepository.save(userNew);
 	}
 	
 	@Transactional
@@ -227,6 +235,24 @@ public class UserService {
 		return null;
 		
 	}
+	
+	public User userUpdateBuild(Long id, UserUpdateRequest userUpdateRequest) {
+		
+	User userOld = this.getUserById(id);
+	
+	userOld.setSocialNumber(userUpdateRequest.getSocialNumber());
+	userOld.setOfficer(officerParse.toDomainObject(userUpdateRequest.getOfficer()));
+	userOld.setNickname(userUpdateRequest.getNickname());
+	userOld.setMail(userUpdateRequest.getMail());
+	userOld.setLastName(userUpdateRequest.getLastName());
+	userOld.setIdentityDocument(userUpdateRequest.getIdentityDocument());
+	userOld.setFirstName(userUpdateRequest.getFirstName());
+	userOld.setDateUpdated(OffsetDateTime.now());
+	userOld.setBirthDate(userUpdateRequest.getBirthDate());
+		
+		return userOld;
+	}
+	
 
 
 

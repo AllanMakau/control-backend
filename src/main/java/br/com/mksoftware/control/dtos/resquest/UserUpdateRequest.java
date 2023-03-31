@@ -13,7 +13,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class UserRequest {
+public class UserUpdateRequest {
 	
 
 	@JsonProperty(value = "codigo")
@@ -43,14 +43,6 @@ public class UserRequest {
 	private String identityDocument;
 	
 	@NotBlank(message = "descrição não pode ser nulo")
-	@JsonProperty(value = "usuario")
-	private String username;
-	
-	@NotBlank(message = "descrição não pode ser nulo")
-	@JsonProperty(value = "senha")
-	private String password;
-	
-	@NotBlank(message = "descrição não pode ser nulo")
 	@JsonProperty(value = "data_aniversario")
 	private OffsetDateTime birthDate;
 	
@@ -68,5 +60,7 @@ public class UserRequest {
 
 	@JsonProperty(value = "contatos")
 	private List<ContactRequest> contactList;
+	
+	
 
 }
