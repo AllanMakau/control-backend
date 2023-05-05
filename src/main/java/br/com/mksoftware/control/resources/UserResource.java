@@ -26,7 +26,7 @@ import br.com.mksoftware.control.services.UserService;
 
 
 @RestController
-@RequestMapping(value = "/user")
+@RequestMapping(value = "/users")
 public class UserResource {
 	
 	

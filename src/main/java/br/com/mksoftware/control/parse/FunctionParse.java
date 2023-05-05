@@ -22,6 +22,10 @@ public class FunctionParse {
 	public Function toDomainObject(FunctionRequest functionRequest) {
 		return modelMapper.map(functionRequest, Function.class);
 	}
+	
+	public void toDomainInputOfficer(FunctionRequest functionRequest, Function function) {
+		 modelMapper.map(functionRequest, function);
+	}
 
 	public FunctionResponse toModelResponse(Function function) {
 		return modelMapper.map(function, FunctionResponse.class);

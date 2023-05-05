@@ -107,15 +107,15 @@ public class DBService {
 		pDelete.getTaglist().addAll(Arrays.asList(f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12));
 		functionRepository.save(pDelete);
 		
-		Officer of1 = new Officer(null, "Diretor", "Diretor", true);
-		Officer of2 = new Officer(null, "Analista", "Analista", true);
-		Officer of3 = new Officer(null, "Cordenador", "Cordenador", true);
+		Officer of1 = new Officer(null, "Diretor", "Diretor", true, null);
+		Officer of2 = new Officer(null, "Analista", "Analista", true, null);
+		Officer of3 = new Officer(null, "Cordenador", "Cordenador", true, null);
 		
 		officeRepository.saveAll(Arrays.asList(of1,of2,of3));
 		
-		Department dp1 = new Department(null, "Recursos Humanos", "", true);
-		Department dp2 = new Department(null, "Diretoria", "Diretoria", true);
-		Department dp3 = new Department(null, "Atendimento", "Atendimento", true);
+		Department dp1 = new Department(null, "Recursos Humanos", "", true, null);
+		Department dp2 = new Department(null, "Diretoria", "Diretoria", true, null);
+		Department dp3 = new Department(null, "Atendimento", "Atendimento", true, null);
 		
 		departamentRepository.saveAll(Arrays.asList(dp1,dp2,dp3));
 		

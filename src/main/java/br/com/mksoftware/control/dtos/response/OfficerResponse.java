@@ -14,7 +14,7 @@ import lombok.Setter;
 public class OfficerResponse {
 	
 	
-	@JsonProperty(value = "codigo")
+	@JsonProperty(value = "id")
 	private String id;
 	
 	@JsonProperty(value = "nome")

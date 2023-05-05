@@ -98,6 +98,9 @@ public class FunctionService {
 		}
 		
 		function.removeTag(getTag);
+		
+		functionRepository.save(function);
+		functionRepository.save(function);
 
 		return function;
 	}

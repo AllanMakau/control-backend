@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 public class SystemRequest {
 
-	@JsonProperty(value = "codigo")
+	@JsonProperty(value = "id")
 	private String id;
 	
 	@NotBlank(message = "descrição não pode ser nulo")

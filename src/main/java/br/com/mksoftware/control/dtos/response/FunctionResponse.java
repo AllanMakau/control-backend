@@ -15,7 +15,7 @@ import lombok.Setter;
 @JsonInclude(Include.NON_NULL)
 public class FunctionResponse {
 	
-	@JsonProperty(value = "codigo")
+	@JsonProperty(value = "id")
 	private String id;
 	
 	@JsonProperty(value = "nome")
@@ -30,7 +30,7 @@ public class FunctionResponse {
 	@JsonProperty(value = "sistema")
 	private SystemResponse system;
 	
-	@JsonProperty(value = "tag_lista")
+	@JsonProperty(value = "tag_list")
     private Set<TagPermissionResponse> taglist;
 
 }

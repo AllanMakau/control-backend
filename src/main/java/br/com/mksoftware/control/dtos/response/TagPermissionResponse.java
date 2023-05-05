@@ -13,7 +13,7 @@ import lombok.Setter;
 @JsonInclude(Include.NON_NULL)
 public class TagPermissionResponse {
 	
-	@JsonProperty(value = "codigo")
+	@JsonProperty(value = "id")
 	private String id;
 	
 	@JsonProperty(value = "nome")

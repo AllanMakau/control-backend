@@ -16,7 +16,7 @@ import lombok.Setter;
 public class UserRequest {
 	
 
-	@JsonProperty(value = "codigo")
+	@JsonProperty(value = "id")
     private Long id;
 	
 	@NotBlank(message = "descrição não pode ser nulo")
@@ -39,7 +39,7 @@ public class UserRequest {
 	private String socialNumber;
 	
 	@NotBlank(message = "descrição não pode ser nulo")
-	@JsonProperty(value = "rg")
+	@JsonProperty(value = "registro")
 	private String identityDocument;
 	
 	@NotBlank(message = "descrição não pode ser nulo")

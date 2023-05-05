@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.mksoftware.control.dtos.resquest.DepartmentRequest;
 import br.com.mksoftware.control.entities.Department;
+import br.com.mksoftware.control.entities.System;
 import br.com.mksoftware.control.parse.DepartmentParse;
 import br.com.mksoftware.control.services.DepartmentService;
 
@@ -59,10 +60,11 @@ public class DepartmentResource {
 	}
 	
 	
-	@RequestMapping(method = RequestMethod.PUT)
-	public ResponseEntity<?> update( @RequestBody @Valid DepartmentRequest departmentRequest){
+	@RequestMapping(value = "/{id}",method = RequestMethod.PUT)
+	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid DepartmentRequest departmentRequest){
 		
-		Department department = departmentParse.toDomainObject(departmentRequest);
+		Department department = departmentService.getDepartmentById(id);
+		departmentParse.toDomainInputDepartment(departmentRequest, department);
 		department = departmentService.updateDepartment(department);
 		return ResponseEntity.ok(departmentParse.toModelResponse(department));
 	}

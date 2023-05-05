@@ -59,12 +59,13 @@ public class TagPermissionResource {
 	}
 	
 	
-	@RequestMapping(method = RequestMethod.PUT)
-	public ResponseEntity<?> update(@RequestBody @Valid TagPermissionRequest tagPermissionRequest){
+	@RequestMapping(value = "/{id}",method = RequestMethod.PUT)
+	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid TagPermissionRequest tagPermissionRequest){
 		
-		TagPermission tagPermissionUpdated = tagPermissionParse.toDomainObject(tagPermissionRequest);
-		tagPermissionUpdated = tagPermissionService.updateTagPermission(tagPermissionUpdated); 
-		return ResponseEntity.ok(tagPermissionParse.toModelResponse(tagPermissionUpdated));
+		TagPermission tagPermission = tagPermissionService.getTagPermissionById(id);
+		tagPermissionParse.toDomainInputTagPermission(tagPermissionRequest,tagPermission);
+		tagPermission = tagPermissionService.updateTagPermission(tagPermission); 
+		return ResponseEntity.ok(tagPermissionParse.toModelResponse(tagPermission));
 	}
 	
 	

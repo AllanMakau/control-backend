@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.com.mksoftware.control.dtos.response.TagPermissionResponse;
+import br.com.mksoftware.control.dtos.resquest.SystemRequest;
 import br.com.mksoftware.control.dtos.resquest.TagPermissionRequest;
+import br.com.mksoftware.control.entities.System;
 import br.com.mksoftware.control.entities.TagPermission;
 
 @Component
@@ -19,6 +21,10 @@ public class TagPermissionParse {
 	
 	public TagPermission toDomainObject(TagPermissionRequest tagPermissionRequest) {
 		return modelMapper.map(tagPermissionRequest, TagPermission.class);
+	}
+	
+	public void toDomainInputTagPermission(TagPermissionRequest tagPermissionRequest, TagPermission tagPermission) {
+		 modelMapper.map(tagPermissionRequest, tagPermission);
 	}
 
 	public TagPermissionResponse toModelResponse(TagPermission tagPermission) {

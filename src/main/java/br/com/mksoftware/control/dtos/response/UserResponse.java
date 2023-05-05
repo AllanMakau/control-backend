@@ -16,7 +16,7 @@ import lombok.Setter;
 @JsonInclude(Include.NON_NULL)
 public class UserResponse {
 	
-	@JsonProperty(value = "codigo")
+	@JsonProperty(value = "id")
     private Long id;
 	
 	@JsonProperty(value = "nome")
@@ -34,7 +34,7 @@ public class UserResponse {
 	@JsonProperty(value = "cpf")
 	private String socialNumber;
 	
-	@JsonProperty(value = "rg")
+	@JsonProperty(value = "registro")
 	private String identityDocument;
 	
 	@JsonProperty(value = "usuario")

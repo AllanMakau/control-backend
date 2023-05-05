@@ -63,9 +63,11 @@ public class FunctionResource {
 	}
 	
 	
-	@RequestMapping(method = RequestMethod.PUT)
-	public ResponseEntity<?> update( @RequestBody @Valid FunctionRequest functionRequest){
-		Function function = functionParse.toDomainObject(functionRequest);
+	@RequestMapping(value = "/{id}",method = RequestMethod.PUT)
+	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid FunctionRequest functionRequest){
+		
+		Function function = functionService.getFunctionById(id);
+		functionParse.toDomainInputOfficer(functionRequest, function);
 		function = functionService.updateFunction(function);
 		return ResponseEntity.ok(functionParse.toModelResponse(function));
 	}
@@ -83,7 +85,7 @@ public class FunctionResource {
 		return ResponseEntity.ok(functionParse.toModelResponse(function));
 	}
 	
-	@RequestMapping(value = "/{id}/add-tag", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "/{id}/add-tag", method = RequestMethod.PUT)
 	public ResponseEntity<?> addTagPermission(@PathVariable Long id, @RequestBody @Valid TagPermissionRequest tagPermissionRequest ){
 		var tag = tagPermissionParse.toDomainObject(tagPermissionRequest);
 		Function function = functionService.addTags(id, tag); 
@@ -97,5 +99,5 @@ public class FunctionResource {
 		return ResponseEntity.ok(functionParse.toModelResponse(function));
 	}
 
-
+ 
 }

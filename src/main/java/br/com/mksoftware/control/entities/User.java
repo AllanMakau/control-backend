@@ -76,7 +76,7 @@ public class User implements Serializable {
 	@Column(nullable = false)
 	private OffsetDateTime birthDate;
 	
-	@Column(nullable = false)
+	@Column(nullable = false)	
 	private Boolean isActive;
 	
 	@Column(nullable = true)
@@ -148,9 +148,5 @@ public class User implements Serializable {
 		setIsActive(false);
 	}
 	
-	public User updateUser(UserUpdateRequest user) { 
-		
-		return null;
-	}
 
 }

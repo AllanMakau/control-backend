@@ -20,6 +20,11 @@ public class OfficerParse {
 	public Officer toDomainObject(OfficerRequest officerRequest) {
 		return modelMapper.map(officerRequest, Officer.class);
 	}
+	
+	public void toDomainInputOfficer(OfficerRequest officerRequest, Officer officer) {
+		 modelMapper.map(officerRequest, officer);
+	}
+
 
 	public OfficerResponse toModelResponse(Officer officer) {
 		return modelMapper.map(officer, OfficerResponse.class);

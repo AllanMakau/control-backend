@@ -56,9 +56,11 @@ public class OfficerResource {
 	}
 	
 	
-	@RequestMapping(method = RequestMethod.PUT)
-	public ResponseEntity<?> update( @RequestBody @Valid OfficerRequest officerRequest){
-		Officer officer = officerParse.toDomainObject(officerRequest);
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid OfficerRequest officerRequest){
+		
+		Officer officer = officerService.getOfficerById(id);
+		officerParse.toDomainInputOfficer(officerRequest, officer) ;
 		officer = officerService.updateOfficer(officer);
 		return ResponseEntity.ok(officerParse.toModelResponse(officer));
 	}
@@ -69,7 +71,6 @@ public class OfficerResource {
 		Officer officerUpdated = officerService.activate(id); 
 		return ResponseEntity.ok(officerParse.toModelResponse(officerUpdated));
 	}
-	
 	@RequestMapping(value = "/{id}/inactivate", method = RequestMethod.PUT)
 	public ResponseEntity<?> inactivateUser(@PathVariable Long id ){
 		Officer officerUpdated = officerService.inactivate(id); 

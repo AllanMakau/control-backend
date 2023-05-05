@@ -40,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	};
 
 	private static final String[] PUBLIC_MATCHERS_GET = {
-			"/user/**",
+			"/users/**",
 			"/function/**",
 			"/system/**",
 			"/tagpermission/**",
@@ -55,13 +55,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			"/auth/forgot/**",
 			"/user-auth/forgot/**",
 			"/user-auth/forgot/update-password/**",
-			"/user/**",
-			"/user/**",
+			"/users/**",
+			"/users/**",
 			"/function/**",
 			"/system/**",
 			"/tagpermission/**",
 			"/officer/**",
-			"/department/**",
+			"/departament/**",
 			"/function/**",
 			"/system/**",
 	};

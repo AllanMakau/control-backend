@@ -9,7 +9,9 @@ import org.springframework.stereotype.Component;
 
 import br.com.mksoftware.control.dtos.response.DepartamentoResponse;
 import br.com.mksoftware.control.dtos.resquest.DepartmentRequest;
+import br.com.mksoftware.control.dtos.resquest.SystemRequest;
 import br.com.mksoftware.control.entities.Department;
+import br.com.mksoftware.control.entities.System;
 
 @Component
 public class DepartmentParse {
@@ -19,6 +21,10 @@ public class DepartmentParse {
 
 	public Department toDomainObject(DepartmentRequest departmentRequest) {
 		return modelMapper.map(departmentRequest, Department.class);
+	}
+	
+	public void toDomainInputDepartment(DepartmentRequest departmentRequest, Department department) {
+		 modelMapper.map(departmentRequest, department);
 	}
 
 	public DepartamentoResponse toModelResponse(Department department) {
@@ -30,5 +36,7 @@ public class DepartmentParse {
 				.map(department -> toModelResponse(department))
 				.collect(Collectors.toList());  
 	}
+	
+
 
 }

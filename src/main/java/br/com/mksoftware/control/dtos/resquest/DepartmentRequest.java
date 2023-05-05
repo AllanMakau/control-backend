@@ -5,14 +5,16 @@ import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
+@Data
 public class DepartmentRequest {
 	
-	@JsonProperty(value = "codigo")
+	@JsonProperty(value = "id")
 	private String id;
 	
 	@NotBlank(message = "descrição não pode ser nulo")

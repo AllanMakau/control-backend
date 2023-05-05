@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 public class ContactRequest {
 
-	@JsonProperty(value = "codigo")
+	@JsonProperty(value = "id")
 	private Long id;
 	
 	@NotBlank(message = "Tipo do contato não pode ser nulo")

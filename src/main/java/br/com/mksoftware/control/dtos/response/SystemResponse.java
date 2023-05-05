@@ -14,7 +14,7 @@ import lombok.Setter;
 public class SystemResponse {
 	
 
-	@JsonProperty(value = "codigo")
+	@JsonProperty(value = "id")
 	private String id;
 	
 	@JsonProperty(value = "nome")

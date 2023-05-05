@@ -39,7 +39,7 @@ public class UserUpdateRequest {
 	private String socialNumber;
 	
 	@NotBlank(message = "descrição não pode ser nulo")
-	@JsonProperty(value = "rg")
+	@JsonProperty(value = "registro")
 	private String identityDocument;
 	
 	@NotBlank(message = "descrição não pode ser nulo")
